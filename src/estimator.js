@@ -25,22 +25,29 @@ const covid19ImpactEstimator = (data) => {
       }
     };
     const days = normalisedDuration(data.timeToElapse, data.periodType);
+    const avbBeds = Math.trunc(data.totalHospitalBeds * 0.35);
   
     const IpctCurrentlyInfected = data.reportedCases * 10;
     const IpctInfectionsByRequestedTime = Math.trunc(IpctCurrentlyInfected * (2 ** (days / 3)));
-  
+    const IpctSvrCasesByRequestedTime = Math.trunc(0.15 * IpctInfectionsByRequestedTime);
+    const IpctHospitalBedsByRequestedTime = Math.trunc(IpctSvrCasesByRequestedTime - avbBeds);
   
     const SvrIpctCurrentlyInfected = data.reportedCases * 50;
     const SvrIpctInfectionsByRequestedTime = Math.trunc(SvrIpctCurrentlyInfected * (2 ** (days / 3)));
-  
+    const SvrIpctSvrCasesByRequestedTime = Math.trunc(0.15 * SvrIpctInfectionsByRequestedTime);
+    const SvrIpctHospitalBedsByRequestedTime = Math.trunc(SvrIpctSvrCasesByRequestedTime - avbBeds);
   
     const bestCaseEstimation = {
       currentlyInfected: IpctCurrentlyInfected,
       infectionsByRequestedTime: IpctInfectionsByRequestedTime,
+      severeCasesByRequestedTime: IpctSvrCasesByRequestedTime,
+      hospitalBedsByRequestedTime: IpctHospitalBedsByRequestedTime,
     };
     const severeCaseEstimation = {
       currentlyInfected: SvrIpctCurrentlyInfected,
       infectionsByRequestedTime: SvrIpctInfectionsByRequestedTime,
+      severeCasesByRequestedTime: SvrIpctSvrCasesByRequestedTime,
+      hospitalBedsByRequestedTime: SvrIpctHospitalBedsByRequestedTime,
     };
     return {
       data,
