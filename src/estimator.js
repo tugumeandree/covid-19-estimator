@@ -31,23 +31,35 @@ const covid19ImpactEstimator = (data) => {
     const IpctInfectionsByRequestedTime = Math.trunc(IpctCurrentlyInfected * (2 ** (days / 3)));
     const IpctSvrCasesByRequestedTime = Math.trunc(0.15 * IpctInfectionsByRequestedTime);
     const IpctHospitalBedsByRequestedTime = Math.trunc(IpctSvrCasesByRequestedTime - avbBeds);
+    const IpctCasesForICUByRequestedTime = 0.05 * IpctInfectionsByRequestedTime;
+    const IpctCasesForVentilatorsByRequestedTime = 0.02 * IpctInfectionsByRequestedTime;
+    const IpctDollarsInFlight = IpctInfectionsByRequestedTime * data.region.avgDailyIncomeInUSD * days;// eslint-disable-line max-len
   
     const SvrIpctCurrentlyInfected = data.reportedCases * 50;
     const SvrIpctInfectionsByRequestedTime = Math.trunc(SvrIpctCurrentlyInfected * (2 ** (days / 3)));
     const SvrIpctSvrCasesByRequestedTime = Math.trunc(0.15 * SvrIpctInfectionsByRequestedTime);
     const SvrIpctHospitalBedsByRequestedTime = Math.trunc(SvrIpctSvrCasesByRequestedTime - avbBeds);
+    const SvrIpctCasesForICUByRequestedTime = 0.05 * SvrIpctInfectionsByRequestedTime;
+    const SvrIpctCasesForVentilatorsByRequestedTime = 0.02 * SvrIpctInfectionsByRequestedTime;
+    const SvrIpctDollarsInFlight = SvrIpctInfectionsByRequestedTime * data.region.avgDailyIncomeInUSD * days;// eslint-disable-line max-len
   
     const bestCaseEstimation = {
       currentlyInfected: IpctCurrentlyInfected,
       infectionsByRequestedTime: IpctInfectionsByRequestedTime,
       severeCasesByRequestedTime: IpctSvrCasesByRequestedTime,
       hospitalBedsByRequestedTime: IpctHospitalBedsByRequestedTime,
+      casesForICUByRequestedTime: IpctCasesForICUByRequestedTime,
+      casesForVentilatorsByRequestedTime: IpctCasesForVentilatorsByRequestedTime,
+      dollarsInFlight: IpctDollarsInFlight,
     };
     const severeCaseEstimation = {
       currentlyInfected: SvrIpctCurrentlyInfected,
       infectionsByRequestedTime: SvrIpctInfectionsByRequestedTime,
       severeCasesByRequestedTime: SvrIpctSvrCasesByRequestedTime,
       hospitalBedsByRequestedTime: SvrIpctHospitalBedsByRequestedTime,
+      casesForICUByRequestedTime: SvrIpctCasesForICUByRequestedTime,
+      casesForVentilatorsByRequestedTime: SvrIpctCasesForVentilatorsByRequestedTime,
+      dollarsInFlight: SvrIpctDollarsInFlight,
     };
     return {
       data,
