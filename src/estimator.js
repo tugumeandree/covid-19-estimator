@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 const covid19ImpactEstimator = (data) => {
     data = { // eslint-disable-line no-param-reassign
       region: {
